@@ -36,6 +36,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
-
-
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/greeting-javaconfig").allowedOrigins("http://localhost:3000");
+    }
 }

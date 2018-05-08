@@ -18,6 +18,9 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInController;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.nakiel.projektZespolowy.security.MySavedRequestAwareAuthenticationSuccessHandler;
 import pl.nakiel.projektZespolowy.security.RestAuthenticationEntryPoint;
 import pl.nakiel.projektZespolowy.security.facebook.FacebookConnectionSignup;
@@ -50,10 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private Environment environment;
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
+
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         // @formatter:off
         http
+                .cors().and()
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
