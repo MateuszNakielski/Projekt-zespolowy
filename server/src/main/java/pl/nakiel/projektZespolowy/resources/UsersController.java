@@ -59,14 +59,19 @@ public class UsersController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<?> createStandardUser(@RequestBody CreateStandardUserRequestDTO createStandardUserRequestDTO){
 
-        User user = userService.createStandardUser(
-                createStandardUserRequestDTO.getUser().getUsername(),
-                createStandardUserRequestDTO.getUser().getPassword(),
-                createStandardUserRequestDTO.getUser().getEmail(),
-                createStandardUserRequestDTO.getUser().getFirstName(),
-                createStandardUserRequestDTO.getUser().getSecondName()
+        User user = null;
+        try {
+            user = userService.createStandardUser(
+                    createStandardUserRequestDTO.getUser().getUsername(),
+                    createStandardUserRequestDTO.getUser().getPassword(),
+                    createStandardUserRequestDTO.getUser().getEmail(),
+                    createStandardUserRequestDTO.getUser().getFirstName(),
+                    createStandardUserRequestDTO.getUser().getSecondName()
 
-        );
+            );
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
+        }
         UserDTO userDTO = userUserDTOConverter.toUserDTO(user);
         CreateStandardUserResponseDTO createStandardUserResponseDTO = new CreateStandardUserResponseDTO();
         createStandardUserRequestDTO.setUser(userDTO);

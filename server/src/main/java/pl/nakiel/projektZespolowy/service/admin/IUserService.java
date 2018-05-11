@@ -15,7 +15,7 @@ public interface IUserService {
 
     void changePassword(String oldPassword, String newPassword);
 
-    User createStandardUser(String username, String password, String email, String firstName, String secondName);
+    User createStandardUser(String username, String password, String email, String firstName, String secondName) throws Exception;
 
     User getUserById(Long id);
 

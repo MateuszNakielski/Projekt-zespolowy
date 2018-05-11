@@ -50,8 +50,10 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public User createStandardUser(String username, String password, String email, String firstName, String secondName) {
+    public User createStandardUser(String username, String password, String email, String firstName, String secondName) throws Exception {
         User user = new User();
+        if(userRepository.findByUsername(username) != null)
+            throw new Exception("Istnieje użytkownik o wskazanej roli");
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
