@@ -1,5 +1,6 @@
 package pl.nakiel.projektZespolowy.resources.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +15,8 @@ public class UserDTO {
     private String phoneNumber;
     private Integer status;
     private String facebookId;
-    private LocalizationDTO localizationDTO;
+    @JsonIgnore
+    private LocalizationDTO localization;
     private List<String> roles;
     private String password;
 }
