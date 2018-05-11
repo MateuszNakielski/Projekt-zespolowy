@@ -1,6 +1,7 @@
 package pl.nakiel.projektZespolowy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import pl.nakiel.projektZespolowy.security.SecurityService;
 import pl.nakiel.projektZespolowy.service.admin.IUserService;
 import pl.nakiel.projektZespolowy.service.admin.UserService;
 import pl.nakiel.projektZespolowy.utils.converter.EventEventDTOConverter;
+import pl.nakiel.projektZespolowy.utils.exception.NotFoundException;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -128,8 +130,10 @@ public class EventService implements IEventService{
     }
 
     @Override
-    public EventDTO getEvent(Long eventId){
-        Event event = eventRepository.getOne(eventId);
+    public EventDTO getEvent(Long eventId) throws NotFoundException {
+        Event event = eventRepository.findOne(eventId);
+        if(event == null)
+            throw new NotFoundException("Event with id doesnt exist");
         event.setViews(event.getViews()+1);
         event = eventRepository.save(event);
         return eventEventDTOConverter.toEventDTO(event);

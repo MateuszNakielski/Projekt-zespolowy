@@ -5,6 +5,7 @@ import pl.nakiel.projektZespolowy.domain.security.Role;
 import pl.nakiel.projektZespolowy.domain.security.User;
 import pl.nakiel.projektZespolowy.resources.dto.createstandarduser.CreateStandardUserRequestDTO;
 import pl.nakiel.projektZespolowy.resources.dto.initfacebookuser.InitFacebookUserRequestDTO;
+import pl.nakiel.projektZespolowy.utils.exception.UsernameExistsException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface IUserService {
 
     void changePassword(String oldPassword, String newPassword);
 
-    User createStandardUser(String username, String password, String email, String firstName, String secondName) throws Exception;
+    User createStandardUser(String username, String password, String email, String firstName, String secondName) throws UsernameExistsException;
 
     User getUserById(Long id);
 

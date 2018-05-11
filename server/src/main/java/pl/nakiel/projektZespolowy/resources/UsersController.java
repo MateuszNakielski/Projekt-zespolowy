@@ -20,6 +20,8 @@ import pl.nakiel.projektZespolowy.resources.dto.initfacebookuser.InitFacebookUse
 import pl.nakiel.projektZespolowy.security.ISecurityService;
 import pl.nakiel.projektZespolowy.service.admin.IUserService;
 import pl.nakiel.projektZespolowy.utils.converter.UserUserDTOConverter;
+import pl.nakiel.projektZespolowy.utils.exception.NotFoundException;
+import pl.nakiel.projektZespolowy.utils.exception.UsernameExistsException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,7 +71,7 @@ public class UsersController {
                     createStandardUserRequestDTO.getUser().getSecondName()
 
             );
-        } catch (Exception e) {
+        } catch (UsernameExistsException e) {
             return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
         }
         UserDTO userDTO = userUserDTOConverter.toUserDTO(user);

@@ -3,6 +3,7 @@ package pl.nakiel.projektZespolowy.service;
 import pl.nakiel.projektZespolowy.resources.dto.common.CommentDTO;
 import pl.nakiel.projektZespolowy.resources.dto.common.EventDTO;
 import pl.nakiel.projektZespolowy.resources.dto.common.ImageDTO;
+import pl.nakiel.projektZespolowy.utils.exception.NotFoundException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface IEventService {
 
     void removeComment(CommentDTO commentDTO) throws Exception;
 
-    EventDTO getEvent(Long eventId);
+    EventDTO getEvent(Long eventId) throws NotFoundException;
 
     List<EventDTO> getAllEvents();
 

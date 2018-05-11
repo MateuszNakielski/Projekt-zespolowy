@@ -12,6 +12,7 @@ import pl.nakiel.projektZespolowy.resources.dto.createstandarduser.CreateStandar
 import pl.nakiel.projektZespolowy.resources.dto.initfacebookuser.InitFacebookUserRequestDTO;
 import pl.nakiel.projektZespolowy.security.ISecurityService;
 import pl.nakiel.projektZespolowy.security.SecurityService;
+import pl.nakiel.projektZespolowy.utils.exception.UsernameExistsException;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
@@ -50,10 +51,10 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public User createStandardUser(String username, String password, String email, String firstName, String secondName) throws Exception {
+    public User createStandardUser(String username, String password, String email, String firstName, String secondName) throws UsernameExistsException {
         User user = new User();
         if(userRepository.findByUsername(username) != null)
-            throw new Exception("Istnieje użytkownik o wskazanej roli");
+            throw new UsernameExistsException("Istnieje użytkownik o wskazanej roli");
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);

@@ -14,7 +14,7 @@ import pl.nakiel.projektZespolowy.resources.dto.followevent.FollowEventRequestDT
 import pl.nakiel.projektZespolowy.resources.dto.getallevents.GetAllEventsResponseDTO;
 import pl.nakiel.projektZespolowy.resources.dto.getevent.GetEventResponseDTO;
 import pl.nakiel.projektZespolowy.service.IEventService;
-
+import pl.nakiel.projektZespolowy.utils.exception.NotFoundException;
 import java.util.List;
 
 @RestController
@@ -32,7 +32,12 @@ public class EventController {
     //@PreAuthorize("hasAuthority('STANDARD_USER')")
     public ResponseEntity<?> getEvent(@PathVariable("id") Long eventId){
         GetEventResponseDTO getEventResponseDTO = new GetEventResponseDTO();
-        EventDTO eventDTO = eventService.getEvent(eventId);
+        EventDTO eventDTO = null;
+        try {
+            eventDTO = eventService.getEvent(eventId);
+        } catch (NotFoundException e) {
+            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         getEventResponseDTO.setEvent(eventDTO);
         return new ResponseEntity(getEventResponseDTO, HttpStatus.OK);
     }
