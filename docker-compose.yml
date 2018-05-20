@@ -1,0 +1,51 @@
+version: '3'
+services:
+  nginx:
+    container_name: projekt-zespolowy-nginx
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+ 
+  db:
+    container_name: projekt-zespolowy-mysql
+    image: mysql/mysql-server:5.7
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: projektzespolowy
+      MYSQL_ROOT_HOST: '%'
+    expose:
+      - "3306"
+    restart: always
+  
+  server:
+    container_name: projekt-zespolowy-server
+    restart: always
+    build: ./server
+    working_dir: /server
+    volumes:
+      - ./server:/server
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    command: mvn clean spring-boot:run
+    depends_on:
+      - nginx
+      - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: projekt-zespolowy-phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: projektzespolowy
+      MYSQL_ROOT_PASSWORD: projektzespolowy
+    ports:
+      - 4080:80
+    depends_on:
+      - db

@@ -27,6 +27,6 @@ public class Notification implements Serializable {
     @Column(name="CONTENT")
     private String content;
 
-    @Column(name="READ")
+    @Column(name="IS_READ")
     private Boolean read;
 }
