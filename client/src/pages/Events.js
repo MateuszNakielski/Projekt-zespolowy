@@ -1,47 +1,11 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { Grid, Paper, Button } from '@material-ui/core';
+
 import Event from '../components/Events/Event';
-import Grid from '@material-ui/core/Grid'
+import { API } from '../helpers/PetAlertAPI';
+import { Link } from 'react-router-dom';
 
-
-const events = [
-  {
-    "id": 5,
-    "title": "ĄĘÓŚŻŹĆŃŁąęóśżźćńł",
-    "description": "opis",
-    "date": "2018-05-14 19:39",
-    "localization": null,
-    "type": 1,
-    "views": 0,
-    "author": {
-      "id": 2,
-      "firstName": "Mateusz",
-      "secondName": "Nakielski",
-    },
-    "followingUsers": 15,
-    "comments": 0,
-    "images": [],
-    "active": true
-  },
-  {
-    "id": 7,
-    "title": "ĄĘÓŚŻŹĆŃŁąęóśżźćńł",
-    "description": "opis",
-    "date": "2018-05-14 19:39",
-    "localization": null,
-    "type": 1,
-    "views": 0,
-    "author": {
-      "id": 2,
-      "firstName": "Mateusz",
-      "secondName": "Nakielski",
-    },
-    "followingUsers": 4,
-    "comments": 0,
-    "images": [],
-    "active": true
-  }
-]
 
 const styles = theme => ({
   root: {
@@ -53,18 +17,48 @@ const styles = theme => ({
     width: '100%',
     margin: '0 auto'
   },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  card: {
+    display: 'flex',
+  },
 });
 
+const NewEventLink = props => <Link to='/events/new' {...props} />;
+
 class Events extends Component {
+
+  state = {
+    loaded: false,
+    events: [],
+  }
+  componentDidMount = () => {
+    if (!this.state.loaded) {
+      API.getAllEvents()
+        .then(response => response.data.events)
+        .then(events => {
+          this.setState({ loaded: true, events });
+        });
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Grid container spacing={16} direction='column'>
-        {events.map(ev => (
           <Grid item>
-            <Event key={ev.id} data={ev} />
+            <Paper className={classes.card}>
+              <Button className={classes.button} component={NewEventLink}>
+                Nowe zgłoszenie
+              </Button>
+            </Paper>
           </Grid>
+          {this.state.events.map(ev => (
+            <Grid key={ev.id} item>
+              <Event data={ev} />
+            </Grid>
           ))}
         </Grid>
       </div>

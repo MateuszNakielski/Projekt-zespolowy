@@ -20,8 +20,6 @@ class Register extends React.Component {
     firstName: '',
     lastName: '',
     email: '',
-    phoneNumber: '',
-
   }
 
   handleClose = () => {
@@ -32,7 +30,6 @@ class Register extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
-      phoneNumber: '',
     });
 
     history.goBack();
@@ -77,7 +74,7 @@ class Register extends React.Component {
                       });
                     }}
                   >
-                    Zaloguj
+                    Zarejestruj
                 </Button>
                 )
               }

@@ -1,15 +1,16 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import { Button, IconButton, Typography } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person'
 import { Link } from 'react-router-dom';
 import AuthContext from '../helpers/AuthContext';
 
+
 const styles = theme => ({
+
 });
 const Menu = (props) => {
-  const { classes } = props;
+  //const { classes } = props;
 
   const unauthenticatedItems = (
     <React.Fragment>
@@ -20,9 +21,11 @@ const Menu = (props) => {
 
   const ProfileLink = props => <Link to='/profile' {...props}></Link>
   const authenticatedItems = ({ displayName }) => (
-    <IconButton component={ProfileLink}>
-      <PersonIcon />
-    </IconButton>
+    <React.Fragment><Typography>{displayName}</Typography>
+      <IconButton component={ProfileLink}>
+        <PersonIcon />
+      </IconButton>
+    </React.Fragment>
   );
 
   return (

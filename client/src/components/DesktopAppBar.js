@@ -20,10 +20,6 @@ const styles = theme => ({
   flex: {
     flex: 1,
   },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
 });
 
 function DesktopAppBar(props) {
@@ -33,15 +29,15 @@ function DesktopAppBar(props) {
       <AppBar position="fixed" style={{alignItems: 'center'}}>
         <Toolbar className={classes.container}>
           <Hidden smUp>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton className={classes.menuButton} aria-label="Menu">
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography variant="title" color="inherit" className={classes.flex}>
+          <Typography variant="title" className={classes.flex}>
             PetAlert
-        </Typography>
+          </Typography>
           <Hidden xsDown>
-            <Menu horizontal />
+            <Menu />
           </Hidden>
         </Toolbar>
       </AppBar>

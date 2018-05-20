@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import withRoot from './withRoot';
 import Layout from './Layout';
 import AuthContext from './helpers/AuthContext';
-import PetAlertAPI from './helpers/PetAlertAPI';
-
-export const API = new PetAlertAPI('http://localhost');
+import { API } from './helpers/PetAlertAPI';
 
 class App extends Component {
 

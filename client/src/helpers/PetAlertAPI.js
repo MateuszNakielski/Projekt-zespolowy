@@ -93,3 +93,5 @@ export default class PetAlertAPI {
     );
   }
 }
+
+export const API = new PetAlertAPI('http://localhost');

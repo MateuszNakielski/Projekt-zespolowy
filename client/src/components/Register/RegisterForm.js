@@ -18,7 +18,7 @@ const styles = theme => ({
 
 const RegisterForm = (props) => {
   const { classes, handleChange } = props;
-  const { username, password, firstName, lastName, email, phoneNumber } = props.data;
+  const { username, password, firstName, lastName, email } = props.data;
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <TextField
@@ -69,16 +69,6 @@ const RegisterForm = (props) => {
         autoComplete="email"
         value={email}
         onChange={handleChange('email')}
-        margin="normal"
-      />
-      <TextField
-        id="phoneNumber"
-        label="Numer telefonu"
-        className={classes.textField}
-        type="tel"
-        autoComplete="tel-national"
-        value={phoneNumber}
-        onChange={handleChange('phoneNumber')}
         margin="normal"
       />
     </form>
