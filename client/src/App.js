@@ -30,13 +30,11 @@ class App extends Component {
   }
 
   login = (data) => {
-    console.log(data);
     const { username, password } = data;
 
     return API.login({ username, password })
-      .then(response => { console.log(response); return API.getProfile() })
+      .then(response => API.getUser())
       .then(response => {
-        console.log(response);
         const { username, roles, firstName, secondName } = response.data.user;
         this.setAuthSessionState({
           isAuthenticated: true,
@@ -47,7 +45,7 @@ class App extends Component {
       });
   }
 
-  register = (user) => API.signup(user);
+  register = (user) => API.signUp(user);
 
   render() {
     const { login, register } = this;

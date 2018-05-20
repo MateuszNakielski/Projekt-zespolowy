@@ -45,6 +45,7 @@ class Register extends React.Component {
   render() {
     const { fullScreen } = this.props;
 
+    // TODO: Refactor to proper form with button type=submit, handle validation in onSubmit.
     return (
       <React.Fragment>
         <Dialog
