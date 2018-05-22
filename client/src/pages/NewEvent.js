@@ -1,6 +1,8 @@
 import React from 'react';
 import { withStyles, Paper, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import Map from '../components/Events/Map';
+import { API } from '../helpers/PetAlertAPI';
+import { eventTypes } from '../helpers/Events';
 
 const styles = theme => ({
   root: {
@@ -31,60 +33,43 @@ class NewEvent extends React.Component {
       title: '',
       description: '',
       type: '',
-      location: {
-        lat: 52.232222,
-        lng: 21.008333,
-      }
+      localization: {
+        latitude: 52.232222,
+        longitude: 21.008333,
+      },
+      images: [],
     },
     mapInitialized: false
   }
 
   handleChange = ev => {
-    this.setState({
-      [ev.target.name]: ev.target.value,
-    });
+    const { name, value } = ev.target;
+    this.setState(
+      prev => ({
+        data: {
+          ...prev.data,
+          [name]: value,
+        },
+      })
+    );
   }
 
-  componentDidMount() {
-    if (!this.state.mapInitialized) {
-      const self = this;
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
-
-      function success(pos) {
-        const crd = pos.coords;
-        console.log(crd);
-        self.setState(
-          prevState => ({
-            data: {
-              ...prevState.data,
-              location: {
-                lat: crd.latitude,
-                lng: crd.longitude
-              }
-            },
-            mapInitialized: true,
-          })
-        );
-      }
-
-      function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-      }
-
-      navigator.geolocation.getCurrentPosition(success, error, options);
-    }
+  handleSubmit = ev => {
+    ev.preventDefault();
+    API.addEvent({ event: this.state.data })
+      .then(response => response.data.event)
+      .then(event => {
+        this.props.history.push(`/events/${event.id}`);
+      });
   }
+
   render() {
     const { classes } = this.props;
     const { type, title, description, location } = this.state.data;
     return (
       <Paper className={classes.root}>
         <Typography variant="title">Nowe zgłoszenie</Typography>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div className={classes.row}>
             <div className={classes.column}>
               <FormControl margin="normal">
@@ -97,10 +82,8 @@ class NewEvent extends React.Component {
                     id: 'type',
                   }}
                 >
-                  <MenuItem value=""><em>brak</em></MenuItem>
-                  <MenuItem value={1}>Poszukiwanie</MenuItem>
-                  <MenuItem value={2}>Znalezienie</MenuItem>
-                  <MenuItem value={3}>Inne</MenuItem>
+                  <MenuItem value><em>brak</em></MenuItem>
+                  { Object.keys(eventTypes).map(key => <MenuItem key={key} value={key}>{eventTypes[key]}</MenuItem>) }
                 </Select>
               </FormControl>
               <TextField
@@ -131,6 +114,9 @@ class NewEvent extends React.Component {
               <Map {...location} />
               <p>Załączniki</p>
             </div>
+          </div>
+          <div className={classes.row}>
+            <Button type="submit">Wyślij zgłoszenie</Button>
           </div>
         </form>
       </Paper>

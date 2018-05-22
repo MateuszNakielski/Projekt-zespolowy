@@ -5,8 +5,8 @@ import moment from 'moment';
 import 'moment/locale/pl';
 
 import defaultPhoto from './placeholder.jpg';
-import { API } from '../../helpers/PetAlertAPI';
 import { Link } from 'react-router-dom';
+import { getDisplayName, eventTypes, formatNumber } from '../../helpers/Events';
 
 
 moment.locale('pl');
@@ -15,7 +15,6 @@ const styles = theme => ({
   card: {
     display: 'flex',
   },
-
   chip: {
     margin: theme.spacing.unit,
   },
@@ -58,24 +57,9 @@ const EventDetailsLink = ({ id }) => props => <Link to={`/events/${id}`} {...pro
 
 class Event extends React.Component {
 
-  getDisplayName = ({ username, firstName, secondName }) => {
-    let displayName = `${firstName || ''} ${secondName || ''}`.trim();
-    return displayName.length > 0 ? displayName : username;
-  }
-
   getPhotoOrDefault = ({ photo }) => {
     if (photo) return photo;
     return defaultPhoto;
-  }
-
-  formatNumber = ({ number }) => number > 99 ? '99+' : `${number}`;
-  formatEventType = ({ eventType }) => {
-    switch (eventType) {
-      case 1: return 'Poszukiwanie';
-      case 2: return 'Znalezienie';
-      case 3: return 'Inne';
-      default: return '???';
-    }
   }
 
   render() {
@@ -90,14 +74,14 @@ class Event extends React.Component {
             title={data.title}
           />
           <Typography variant="button" className={classes.eventType}>
-            {this.formatEventType({ eventType: data.type })}
+            {eventTypes[data.type]}
           </Typography>
         </div>
         <div className={classes.secondCol}>
           <CardContent className={classes.content}>
             <Typography variant="headline">{data.title}</Typography>
             <Typography variant="caption">
-              Zgłoszone przez użytkownika {this.getDisplayName(data.author)}
+              Zgłoszone przez użytkownika {getDisplayName(data.author)}
             </Typography>
             <Typography variant="body2">
               {data.description}
@@ -107,17 +91,17 @@ class Event extends React.Component {
             <Chip label={data.localization || "Brak lokalizacji"} className={classes.chip} />
             <Chip label={moment.utc(data.date).fromNow()} className={classes.chip} />
             <Chip
-              avatar={<Avatar>{this.formatNumber({ number: data.views })}</Avatar>}
+              avatar={<Avatar>{formatNumber({ number: data.views })}</Avatar>}
               label="wyświetleń"
               className={classes.chip}
             />
             <Chip
-              avatar={<Avatar>{this.formatNumber({ number: data.followingUsers.length })}</Avatar>}
+              avatar={<Avatar>{formatNumber({ number: data.followingUsers.length })}</Avatar>}
               label="obserwujących"
               className={classes.chip}
             />
             <Chip
-              avatar={<Avatar>{this.formatNumber({ number: data.comments.length })}</Avatar>}
+              avatar={<Avatar>{formatNumber({ number: data.comments.length })}</Avatar>}
               label="komentarzy"
               className={classes.chip}
             />
