@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Events from './pages/Events';
 import NewEvent from './pages/NewEvent';
 import EventDetails from './pages/EventDetails';
+import {AuthenticatedRoute} from './helpers/Routes';
 
 export default class Layout extends Component {
   render() {
@@ -17,7 +18,7 @@ export default class Layout extends Component {
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Register} />
         <Switch>
-          <Route exact path='/events/new' component={NewEvent} />
+          <AuthenticatedRoute exact path='/events/new' component={NewEvent} />
           <Route path='/events/:id' component={EventDetails} />
           <Route path='/' component={Events} />
         </Switch>

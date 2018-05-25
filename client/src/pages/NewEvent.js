@@ -101,9 +101,9 @@ class NewEvent extends React.Component {
                 id="description"
                 name="description"
                 label="Opis"
-                className={classes.description}
                 multiline
                 rows={5}
+                className={classes.textField}
                 value={description}
                 onChange={this.handleChange}
                 margin="normal"

@@ -1,8 +1,10 @@
 import React from 'react';
-import { withStyles, Paper, Typography, Grid, Button, Chip, Avatar } from '@material-ui/core';
+import { withStyles, Paper, Typography, Grid, Button, Chip, Avatar, TextField, Divider } from '@material-ui/core';
 import { API } from '../helpers/PetAlertAPI';
 import { getDisplayName, eventTypes, formatNumber } from '../helpers/Events';
 import moment from 'moment';
+import AuthContext from '../helpers/AuthContext';
+import Comment from '../components/Events/Comment';
 
 
 const styles = theme => ({
@@ -34,6 +36,12 @@ const styles = theme => ({
   chip: {
     margin: theme.spacing.unit,
   },
+
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    flex: 1,
+  },
 });
 
 class EventDetails extends React.Component {
@@ -41,6 +49,7 @@ class EventDetails extends React.Component {
   state = {
     isLoaded: false,
     data: {},
+    comment: '',
   }
 
   componentDidMount() {
@@ -57,9 +66,40 @@ class EventDetails extends React.Component {
     }
   }
 
+
+  handleChange = ev => {
+    const { name, value } = ev.target;
+    this.setState(
+      prev => ({
+        [name]: value,
+      })
+    );
+  }
+
+  handleObserveClick = () => {
+    const { id } = this.props.match.params;
+    API.observeEvent({ id }).then(response => {
+      console.log(response); // TODO: remove
+    })
+  }
+
+  handleCommentClick = () => {
+    const { id } = this.props.match.params;
+    const { comment } = this.state;
+    API.addComment({ eventId: id, comment }).then(() => {
+      API.getEvent({ id })
+        .then(
+          response => this.setState({
+            isLoaded: true,
+            data: response.data.event
+          })
+        )
+    })
+  }
+
   render() {
     const { classes } = this.props;
-    const { isLoaded, data } = this.state;
+    const { isLoaded, data, comment } = this.state;
     return isLoaded && (
       <div className={classes.root}>
         <Grid container spacing={16} direction="column">
@@ -76,9 +116,15 @@ class EventDetails extends React.Component {
             <Paper className={classes.paper}>
               <Grid container spacing={16} direction="row">
                 <Grid item xs={4}>
-                  <div className={classes.mapContainer}>Mapa</div>
+                  <div className={classes.mapContainer}>
+                    <Typography variant="caption">Mapa</Typography>
+                  </div>
                 </Grid>
-                <Grid item xs={8}>Zdjęcia</Grid>
+                <Grid item xs={8}>
+                  <Typography variant="subheading">
+                    Zdjęcia
+                </Typography>
+                </Grid>
               </Grid>
             </Paper>
           </Grid>
@@ -90,7 +136,17 @@ class EventDetails extends React.Component {
                     <Typography variant="body1">{data.description}</Typography>
                   </Grid>
                   <Grid item>
-                    <Button>Obserwuj</Button></Grid>
+                    <AuthContext.Consumer>
+                      {
+                        ({ username }) => data.followingUsers.filter(
+                          user => user.username === username
+                        ).length === 0 ?
+                          <Button onClick={this.handleObserveClick}>Obserwuj</Button> :
+                          <Button disabled>Obserwowane</Button>
+                      }
+
+                    </AuthContext.Consumer>
+                  </Grid>
                 </Grid>
                 <Grid item>
                   <Chip label={data.localization || "Brak lokalizacji"} className={classes.chip} />
@@ -116,9 +172,36 @@ class EventDetails extends React.Component {
           </Grid>
           <Grid item>
             <Paper className={classes.paper}>
-              <Typography variant="subheading">
-                Komentarze
-              </Typography>
+              <Grid container className={classes.flex} direction="row" spacing={16}>
+                <Grid item className={classes.flex}>
+                  <Typography variant="subheading">
+                    Komentarze
+                  </Typography>
+                  {
+                    data.comments.map(comment => <Comment key={comment.id} {...comment}/>)
+                  }</Grid>
+                <Grid item className={classes.flex} container direction="column">
+                  <Typography variant="subheading">
+                    Dodaj komentarz
+                  </Typography>
+                  <Divider/>
+                  <TextField
+                    id="comment"
+                    name="comment"
+                    label="Komentarz"
+                    multiline
+                    className={classes.textField}
+                    rows={5}
+                    value={comment}
+                    onChange={this.handleChange}
+                    margin="normal"
+                  //error={this.hasError}
+                  />
+                  <Grid item>
+                    <Button onClick={this.handleCommentClick}>Zapisz</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
         </Grid>

@@ -81,6 +81,14 @@ export default class PetAlertAPI {
     )
   }
 
+  observeEvent = ({ id }) => {
+    return axios.post(
+      `${this.apiRoot}/api/event/${id}/followers`,
+      null,
+      { withCredentials: true }
+    )
+  }
+
   addComment = ({ eventId, comment }) => {
     return axios.post(
       `${this.apiRoot}/api/event/comments`,
