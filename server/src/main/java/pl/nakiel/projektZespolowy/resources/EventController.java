@@ -77,12 +77,12 @@ public class EventController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/followers",
+    @RequestMapping(value = "/{id}/followers",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PreAuthorize("hasAuthority('STANDARD_USER')")
-    public ResponseEntity followEvent(@RequestBody FollowEventRequestDTO followEventRequestDTO){
-        eventService.followEvent(followEventRequestDTO.getEvent().getId());
+    public ResponseEntity followEvent(@PathVariable("id") Long id){
+        eventService.followEvent(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 

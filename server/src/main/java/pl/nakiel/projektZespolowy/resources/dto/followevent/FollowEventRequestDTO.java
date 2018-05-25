@@ -5,5 +5,4 @@ import pl.nakiel.projektZespolowy.resources.dto.common.EventDTO;
 
 @Data
 public class FollowEventRequestDTO {
-    private EventDTO event;
 }
