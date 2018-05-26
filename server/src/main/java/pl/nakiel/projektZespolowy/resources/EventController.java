@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.nakiel.projektZespolowy.resources.dto.addcomment.AddCommentRequestDTO;
 import pl.nakiel.projektZespolowy.resources.dto.addevent.AddEventRequestDTO;
 import pl.nakiel.projektZespolowy.resources.dto.addevent.AddEventResponseDTO;
+import pl.nakiel.projektZespolowy.resources.dto.addphototoevent.AddPhotoToEventDTO;
 import pl.nakiel.projektZespolowy.resources.dto.common.EventDTO;
 import pl.nakiel.projektZespolowy.resources.dto.followevent.FollowEventRequestDTO;
 import pl.nakiel.projektZespolowy.resources.dto.getallevents.GetAllEventsResponseDTO;
@@ -63,7 +64,7 @@ public class EventController {
         AddEventResponseDTO addEventResponseDTO = new AddEventResponseDTO();
         EventDTO eventDTO = eventService.addEvent(addEventRequestDTO.getEvent());
         addEventResponseDTO.setEvent(eventDTO);
-        return new ResponseEntity(addEventResponseDTO, HttpStatus.OK);
+        return new ResponseEntity(addEventResponseDTO, HttpStatus.CREATED);
     }
 
     @ResponseBody
@@ -83,6 +84,26 @@ public class EventController {
     @PreAuthorize("hasAuthority('STANDARD_USER')")
     public ResponseEntity followEvent(@PathVariable("id") Long id){
         eventService.followEvent(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{id}/photos",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize("hasAuthority('STANDARD_USER')")
+    public ResponseEntity addPhotoToEvent(@PathVariable("id") Long id, @RequestBody AddPhotoToEventDTO addPhotoToEventDTO){
+        eventService.addImage(id, addPhotoToEventDTO.getImage());
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/{id}/photos/{photoId}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize("hasAuthority('STANDARD_USER')")
+    public ResponseEntity removePhotoFromEvent(@PathVariable("id") Long id, @PathVariable("photoId") Long photoId){
+        eventService.removeImage(id,photoId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

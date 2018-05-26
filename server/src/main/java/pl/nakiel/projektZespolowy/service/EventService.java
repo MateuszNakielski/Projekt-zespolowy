@@ -23,6 +23,7 @@ import pl.nakiel.projektZespolowy.service.admin.UserService;
 import pl.nakiel.projektZespolowy.utils.converter.EventEventDTOConverter;
 import pl.nakiel.projektZespolowy.utils.exception.NotFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -166,13 +167,15 @@ public class EventService implements IEventService{
     }
 
     @Override
-    public void removeImage(ImageDTO image){
-        Image im = imageRepository.getOne(image.getId());
+    public void removeImage(Long id, Long photoId){
+        Image im = imageRepository.getOne(photoId);
+        if(im.getImagesEvent().getId() != id)
+            throw new EntityNotFoundException();
+        for(User user : im.getImagesEvent().getFollowingUsers()){
+            notificationService.addNotification(im.getImagesEvent(), user, "Usunięto obraz");
+        }
         im.setImagesEvent(null);
         imageRepository.save(im);
-        for(User user : im.getImagesEvent().getFollowingUsers()){
-            notificationService.addNotification(im.getImagesEvent(), user, "Dodano Usunięto obraz");
-        }
     }
 
 
