@@ -6,6 +6,7 @@ const AuthContext = React.createContext(
         displayName: null,
         roles: [],
         login: (data) => { },
+        logout: () => { },
         register: (data) => { },
     });
 

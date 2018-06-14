@@ -20,7 +20,7 @@ const Comment = (props) => {
     <Grid container direction="column" className={classes.flex}>
       <Divider/>
       <Typography variant="body1" className={classes.item}>{props.comment}</Typography>
-      <Grid container direction="row" alignItems="space-between">
+      <Grid container direction="row" alignContent="space-between">
         <Grid item className={[classes.flex, classes.item].join(' ')}>
           <Typography variant="caption">{getDisplayName(props.user)}</Typography>
         </Grid>

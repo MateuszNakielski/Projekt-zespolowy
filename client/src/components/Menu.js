@@ -20,17 +20,18 @@ const Menu = (props) => {
   );
 
   const ProfileLink = props => <Link to='/profile' {...props}></Link>
-  const authenticatedItems = ({ displayName }) => (
+  const authenticatedItems = ({ displayName, logout }) => (
     <React.Fragment><Typography>{displayName}</Typography>
       <IconButton component={ProfileLink}>
         <PersonIcon />
       </IconButton>
+      <Button onClick={logout}>Wyloguj</Button>
     </React.Fragment>
   );
 
   return (
     <AuthContext.Consumer>
-      {({ isAuthenticated, displayName }) => isAuthenticated ? authenticatedItems({ displayName }) : unauthenticatedItems}
+      {({ isAuthenticated, displayName, logout }) => isAuthenticated ? authenticatedItems({ displayName, logout }) : unauthenticatedItems}
     </AuthContext.Consumer>
   )
 }

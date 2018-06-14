@@ -66,7 +66,6 @@ class EventDetails extends React.Component {
     }
   }
 
-
   handleChange = ev => {
     const { name, value } = ev.target;
     this.setState(
@@ -78,14 +77,21 @@ class EventDetails extends React.Component {
 
   handleObserveClick = () => {
     const { id } = this.props.match.params;
-    API.observeEvent({ id }).then(response => {
-      console.log(response); // TODO: remove
+    API.observeEvent({ id }).then(() => {
+      API.getEvent({ id })
+        .then(
+          response => this.setState({
+            isLoaded: true,
+            data: response.data.event
+          })
+        )
     })
   }
 
   handleCommentClick = () => {
     const { id } = this.props.match.params;
     const { comment } = this.state;
+    if(comment === '') return;
     API.addComment({ eventId: id, comment }).then(() => {
       API.getEvent({ id })
         .then(
@@ -144,7 +150,6 @@ class EventDetails extends React.Component {
                           <Button onClick={this.handleObserveClick}>Obserwuj</Button> :
                           <Button disabled>Obserwowane</Button>
                       }
-
                     </AuthContext.Consumer>
                   </Grid>
                 </Grid>
@@ -195,7 +200,7 @@ class EventDetails extends React.Component {
                     value={comment}
                     onChange={this.handleChange}
                     margin="normal"
-                  //error={this.hasError}
+                    error={comment === ''}
                   />
                   <Grid item>
                     <Button onClick={this.handleCommentClick}>Zapisz</Button>

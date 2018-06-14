@@ -1,5 +1,7 @@
 import React from 'react';
-import { withStyles, Paper, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { withStyles, Paper, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem, Grid, IconButton, GridList, GridListTile } from '@material-ui/core';
+import { PhotoCamera } from '@material-ui/icons';
+import ReactFileReader from 'react-file-reader';
 import Map from '../components/Events/Map';
 import { API } from '../helpers/PetAlertAPI';
 import { eventTypes } from '../helpers/Events';
@@ -25,6 +27,20 @@ const styles = theme => ({
     flexDirection: 'column',
     margin: theme.spacing.unit,
   },
+  gridList: {
+    width: theme.spacing.unit * 75,
+    height: theme.spacing.unit * 50,
+  },
+  button: {
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)'
+  },
+  fullHeight: {
+    display: 'inline-block',
+    width: '100%',
+    height: theme.spacing.unit * 25,
+  },
 });
 
 class NewEvent extends React.Component {
@@ -39,6 +55,11 @@ class NewEvent extends React.Component {
       },
       images: [],
     },
+    errors: {
+      title: true,
+      description: true,
+      type: true,
+    },
     mapInitialized: false
   }
 
@@ -50,13 +71,43 @@ class NewEvent extends React.Component {
           ...prev.data,
           [name]: value,
         },
+        errors: {
+          ...prev.errors,
+          [name]: value === ''
+        }
       })
     );
   }
 
+  handleFiles = files => {
+    Array.prototype.forEach.call(files, file => {
+      var reader = new FileReader();
+      reader.onloadend = ev => {
+        this.setState(
+          prev => ({
+            data: {
+              ...prev.data,
+              images: [
+                ...prev.data.images,
+                {
+                  fileContent: ev.target.result,
+                  fileName: file.name,
+                }
+              ]
+            }
+          })
+        );
+      }
+      reader.readAsDataURL(file);
+    });
+  }
+
   handleSubmit = ev => {
     ev.preventDefault();
-    API.addEvent({ event: this.state.data })
+    const { errors, data } = this.state;
+    let event = { ...data, images: data.images.map(el => ({ ...el, fileContent: el.fileContent.split('base64,')[1] })) }
+    if (errors.title || errors.description || errors.type) return;
+    API.addEvent({ event })
       .then(response => response.data.event)
       .then(event => {
         this.props.history.push(`/events/${event.id}`);
@@ -64,8 +115,9 @@ class NewEvent extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { type, title, description, location } = this.state.data;
+    const { classes, theme } = this.props;
+    const { type, title, description, location, images } = this.state.data;
+    const { errors } = this.state;
     return (
       <Paper className={classes.root}>
         <Typography variant="title">Nowe zgłoszenie</Typography>
@@ -81,9 +133,10 @@ class NewEvent extends React.Component {
                     name: 'type',
                     id: 'type',
                   }}
+                  error={errors.type}
                 >
-                  <MenuItem value><em>brak</em></MenuItem>
-                  { Object.keys(eventTypes).map(key => <MenuItem key={key} value={key}>{eventTypes[key]}</MenuItem>) }
+                  <MenuItem value=''><em>brak</em></MenuItem>
+                  {Object.keys(eventTypes).map(key => <MenuItem key={key} value={key}>{eventTypes[key]}</MenuItem>)}
                 </Select>
               </FormControl>
               <TextField
@@ -95,7 +148,7 @@ class NewEvent extends React.Component {
                 value={title}
                 onChange={this.handleChange}
                 margin="normal"
-              //error={this.hasError}
+                error={errors.title}
               />
               <TextField
                 id="description"
@@ -107,21 +160,47 @@ class NewEvent extends React.Component {
                 value={description}
                 onChange={this.handleChange}
                 margin="normal"
-              //error={this.hasError}
+                error={errors.description}
               />
             </div>
             <div className={classes.column}>
+              <Typography variant="subheading">Lokalizacja</Typography>
               <Map {...location} />
-              <p>Załączniki</p>
+              <Typography variant="subheading">Zdjęcia</Typography>
+              <GridList cellHeight={theme.spacing.unit * 25} className={classes.gridList} cols={3}>
+                {
+                  images.map(
+                    image => (
+                      <GridListTile key={image.fileName} cols={1}>
+                        <img src={image.fileContent} />
+                      </GridListTile>
+                    )
+                  )
+                }
+                <GridListTile cols={1}>
+                  <ReactFileReader handleFiles={this.handleFiles} multipleFiles={true}>
+                    <span className={classes.fullHeight}>
+                      <IconButton color="primary" className={classes.button} component="span">
+                        <PhotoCamera />
+                      </IconButton>
+                    </span>
+                  </ReactFileReader>
+                </GridListTile>
+                }
+              </GridList>
+
+              <Grid item>
+
+              </Grid>
             </div>
           </div>
           <div className={classes.row}>
             <Button type="submit">Wyślij zgłoszenie</Button>
           </div>
         </form>
-      </Paper>
+      </Paper >
     );
   }
 }
 
-export default withStyles(styles)(NewEvent);
+export default withStyles(styles, { withTheme: true })(NewEvent);

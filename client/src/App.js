@@ -22,6 +22,15 @@ class App extends Component {
     sessionStorage.setItem('auth', JSON.stringify(auth));
   }
 
+  clearAuthSessionState = () => {
+    this.setAuthSessionState({
+      isAuthenticated: false,
+      username: null,
+      displayName: null,
+      roles: []
+    })
+  }
+
   getDisplayName = ({ username, firstName, secondName }) => {
     let displayName = `${firstName || ''} ${secondName || ''}`.trim();
     return displayName.length > 0 ? displayName : username;
@@ -43,13 +52,19 @@ class App extends Component {
       });
   }
 
+  logout = () => {
+    return API.logout().then(() => {
+      this.clearAuthSessionState();
+    });
+  }
+
   register = (user) => API.signUp(user);
 
   render() {
-    const { login, register } = this;
+    const { login, register, logout } = this;
     const { auth } = this.state;
     return (
-      <AuthContext.Provider value={{ ...auth, login, register }}>
+      <AuthContext.Provider value={{ ...auth, login, logout, register }}>
         <Layout />
       </AuthContext.Provider>
     );

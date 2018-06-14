@@ -17,16 +17,11 @@ export default class PetAlertAPI {
     )
   }
 
-  /*
-  fbLogin = () => {
-    throw NotImplemented
-  } */
-
   logout = () => {
     return axios.get(
       `${this.apiRoot}/logout`,
-      { withCredentials: true }
-    );
+      { withCredentials: true, maxRedirects: 0 }
+    ).catch((err) => { return true; })
   }
 
   changePassword = ({ newPassword }) => {
@@ -67,6 +62,7 @@ export default class PetAlertAPI {
   }
 
   addEvent = ({ event }) => {
+    console.log(JSON.stringify(event).length);
     return axios.post(
       `${this.apiRoot}/api/event`,
       { event },
