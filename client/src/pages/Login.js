@@ -77,7 +77,7 @@ class Login extends React.Component {
           </DialogActions>
         </Dialog>
         <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open={hasError}
           onClose={() => { this.setState({ hasError: false }) }}
           ContentProps={{

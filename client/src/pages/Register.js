@@ -30,6 +30,7 @@ class Register extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
+      hasError: false,
     });
 
     history.goBack();
@@ -67,10 +68,8 @@ class Register extends React.Component {
                     onClick={() => {
                       register(this.state).then(() => {
                         this.handleClose();
-                      }).catch((error) => {
-                        console.log("Coś się popsuło")
-                        console.log(error);
-                        /* ... */
+                      }).catch(() => {
+                        this.setState({ hasError: true })
                       });
                     }}
                   >
@@ -82,7 +81,8 @@ class Register extends React.Component {
           </DialogActions>
         </Dialog>
         <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={this.state.hasError}
           onClose={() => { this.setState({ hasError: false }) }}
           ContentProps={{
             'aria-describedby': 'message-id',
