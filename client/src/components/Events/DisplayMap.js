@@ -51,7 +51,7 @@ class DisplayMap extends Component {
               region: 'pl',
             }
           }
-          defaultCenter={{ lat, lng }}
+          center={{ lat, lng }}
           zoom={this.state.zoom}
           onChange={this.handleChange}
           onClick={onClick}
