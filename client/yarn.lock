@@ -9,6 +9,10 @@
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
+"@mapbox/point-geometry@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
+
 "@material-ui/core@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.0.0.tgz#857b871038bb300f2d25594ce0cd250be944e71b"
@@ -46,6 +50,12 @@
   resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-1.0.0.tgz#0cac779257de02538be8834e1b0e45b7cd2cb898"
   dependencies:
     recompose "^0.26.0 || ^0.27.0"
+
+"@types/google-map-react@^0.23.4":
+  version "0.23.4"
+  resolved "https://registry.yarnpkg.com/@types/google-map-react/-/google-map-react-0.23.4.tgz#8075727676a5c1cd3fbb298066e847691299f13b"
+  dependencies:
+    "@types/react" "*"
 
 "@types/jss@^9.5.3":
   version "9.5.3"
@@ -2567,6 +2577,10 @@ event-emitter@~0.3.5:
     d "1"
     es5-ext "~0.10.14"
 
+eventemitter3@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
+
 eventemitter3@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
@@ -3102,6 +3116,14 @@ globby@^6.1.0:
     object-assign "^4.0.1"
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
+
+google-map-react@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/google-map-react/-/google-map-react-1.0.4.tgz#83be7a36621c7583e03b141739cbd92013dfd256"
+  dependencies:
+    "@mapbox/point-geometry" "^0.1.0"
+    eventemitter3 "^1.1.0"
+    scriptjs "^2.5.7"
 
 got@^6.7.1:
   version "6.7.1"
@@ -6326,6 +6348,10 @@ schema-utils@^0.3.0:
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
   dependencies:
     ajv "^5.0.0"
+
+scriptjs@^2.5.7:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/scriptjs/-/scriptjs-2.5.8.tgz#d0c43955c2e6bad33b6e4edf7b53b8965aa7ca5f"
 
 scroll@^2.0.3:
   version "2.0.3"

@@ -60,11 +60,13 @@ class App extends Component {
 
   register = (user) => API.signUp(user);
 
+  hasRole = (role) => role in this.state.auth.roles;
+
   render() {
-    const { login, register, logout } = this;
+    const { login, register, logout, hasRole } = this;
     const { auth } = this.state;
     return (
-      <AuthContext.Provider value={{ ...auth, login, logout, register }}>
+      <AuthContext.Provider value={{ ...auth, login, logout, register, hasRole }}>
         <Layout />
       </AuthContext.Provider>
     );

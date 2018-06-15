@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles, Paper, Button, TextField, Typography, FormControl, InputLabel, Select, MenuItem, Grid, IconButton, GridList, GridListTile } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 import ReactFileReader from 'react-file-reader';
-import Map from '../components/Events/Map';
+import DisplayMap from '../components/Events/DisplayMap';
 import { API } from '../helpers/PetAlertAPI';
 import { eventTypes } from '../helpers/Events';
 
@@ -28,7 +28,7 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   gridList: {
-    width: theme.spacing.unit * 75,
+    width: theme.spacing.unit * 50,
     height: theme.spacing.unit * 50,
   },
   button: {
@@ -79,6 +79,10 @@ class NewEvent extends React.Component {
     );
   }
 
+  handleMapClick = ({lat, lng}) => {
+    this.setState(({data}) => ({ data: {...data, localization: { latitude: lat, longitude: lng }}}));
+  }
+
   handleFiles = files => {
     Array.prototype.forEach.call(files, file => {
       var reader = new FileReader();
@@ -116,7 +120,7 @@ class NewEvent extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-    const { type, title, description, location, images } = this.state.data;
+    const { type, title, description, localization, images } = this.state.data;
     const { errors } = this.state;
     return (
       <Paper className={classes.root}>
@@ -165,9 +169,11 @@ class NewEvent extends React.Component {
             </div>
             <div className={classes.column}>
               <Typography variant="subheading">Lokalizacja</Typography>
-              <Map {...location} />
+              <DisplayMap size={{ width: '100%', height: 400 }} lat={localization.latitude} lng={localization.longitude} onClick={this.handleMapClick}/>
+            </div>
+            <div className={classes.column}>
               <Typography variant="subheading">Zdjęcia</Typography>
-              <GridList cellHeight={theme.spacing.unit * 25} className={classes.gridList} cols={3}>
+              <GridList cellHeight={theme.spacing.unit * 25} className={classes.gridList} cols={2}>
                 {
                   images.map(
                     image => (
@@ -188,10 +194,6 @@ class NewEvent extends React.Component {
                 </GridListTile>
                 }
               </GridList>
-
-              <Grid item>
-
-              </Grid>
             </div>
           </div>
           <div className={classes.row}>

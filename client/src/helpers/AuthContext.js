@@ -8,6 +8,7 @@ const AuthContext = React.createContext(
         login: (data) => { },
         logout: () => { },
         register: (data) => { },
+        hasRole: (role) => { },
     });
 
 export default AuthContext

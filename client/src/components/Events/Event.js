@@ -7,6 +7,7 @@ import 'moment/locale/pl';
 import defaultPhoto from './placeholder.jpg';
 import { Link } from 'react-router-dom';
 import { getDisplayName, eventTypes, formatNumber } from '../../helpers/Events';
+import DisplayMap from './DisplayMap';
 
 
 moment.locale('pl');
@@ -39,6 +40,10 @@ const styles = theme => ({
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
+  },
+
+  thirdCol: {
+    margin: 0,
   },
 
   content: {
@@ -88,7 +93,6 @@ class Event extends React.Component {
             </Typography>
           </CardContent>
           <div className={classes.footer}>
-            <Chip label={data.localization || "Brak lokalizacji"} className={classes.chip} />
             <Chip label={moment.utc(data.date).fromNow()} className={classes.chip} />
             <Chip
               avatar={<Avatar>{formatNumber({ number: data.views })}</Avatar>}
@@ -107,6 +111,9 @@ class Event extends React.Component {
             />
             <Button component={EventDetailsLink({ id: data.id })} className={classes.right}>Szczegóły</Button>
           </div>
+        </div>
+        <div className={classes.thirdCol}>
+          <DisplayMap lat={data.localization.latitude} lng={data.localization.longitude} size={{width: 200, height: '100%'}} />
         </div>
       </Card>
     )

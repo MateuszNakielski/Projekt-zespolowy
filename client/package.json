@@ -6,6 +6,7 @@
     "@material-ui/core": "^1.0.0",
     "@material-ui/icons": "^1.0.0",
     "axios": "^0.18.0",
+    "google-map-react": "^1.0.4",
     "moment": "^2.22.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -18,5 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@types/google-map-react": "^0.23.4"
   }
 }

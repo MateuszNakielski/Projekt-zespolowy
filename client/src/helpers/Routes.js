@@ -10,3 +10,11 @@ export const AuthenticatedRoute = (props) => {
     </AuthContext.Consumer>
   )
 }
+
+export const AuthenticatedWithRoleRoute = ({role, ...props}) => {
+  return (
+    <AuthContext.Consumer>
+      {({ roles }) => role in roles ? <Route {...props} /> : <Redirect to={`/login`} />}
+    </AuthContext.Consumer>
+  )
+}

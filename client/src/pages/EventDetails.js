@@ -5,6 +5,7 @@ import { getDisplayName, eventTypes, formatNumber } from '../helpers/Events';
 import moment from 'moment';
 import AuthContext from '../helpers/AuthContext';
 import Comment from '../components/Events/Comment';
+import DisplayMap from '../components/Events/DisplayMap';
 
 
 const styles = theme => ({
@@ -16,12 +17,6 @@ const styles = theme => ({
     justifyContent: 'flex-start',
     maxWidth: theme.spacing.unit * 150,
     width: '100%',
-  },
-
-  mapContainer: {
-    width: '100%',
-    height: 250,
-    border: `1px solid #eee`,
   },
 
   paper: {
@@ -91,7 +86,7 @@ class EventDetails extends React.Component {
   handleCommentClick = () => {
     const { id } = this.props.match.params;
     const { comment } = this.state;
-    if(comment === '') return;
+    if (comment === '') return;
     API.addComment({ eventId: id, comment }).then(() => {
       API.getEvent({ id })
         .then(
@@ -122,9 +117,7 @@ class EventDetails extends React.Component {
             <Paper className={classes.paper}>
               <Grid container spacing={16} direction="row">
                 <Grid item xs={4}>
-                  <div className={classes.mapContainer}>
-                    <Typography variant="caption">Mapa</Typography>
-                  </div>
+                  <DisplayMap lat={data.localization.latitude} lng={data.localization.longitude} size={{ width: '100%', height: 400 }} />
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="subheading">
@@ -144,17 +137,17 @@ class EventDetails extends React.Component {
                   <Grid item>
                     <AuthContext.Consumer>
                       {
-                        ({ username }) => data.followingUsers.filter(
+                        ({ isAuthenticated, username }) => isAuthenticated ? (data.followingUsers.filter(
                           user => user.username === username
                         ).length === 0 ?
                           <Button onClick={this.handleObserveClick}>Obserwuj</Button> :
                           <Button disabled>Obserwowane</Button>
+                        ) : <Button disabled>Zaloguj się, aby obserwować</Button>
                       }
                     </AuthContext.Consumer>
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <Chip label={data.localization || "Brak lokalizacji"} className={classes.chip} />
                   <Chip label={moment.utc(data.date).fromNow()} className={classes.chip} />
                   <Chip
                     avatar={<Avatar>{formatNumber({ number: data.views })}</Avatar>}
@@ -183,29 +176,49 @@ class EventDetails extends React.Component {
                     Komentarze
                   </Typography>
                   {
-                    data.comments.map(comment => <Comment key={comment.id} {...comment}/>)
-                  }</Grid>
-                <Grid item className={classes.flex} container direction="column">
-                  <Typography variant="subheading">
-                    Dodaj komentarz
-                  </Typography>
-                  <Divider/>
-                  <TextField
-                    id="comment"
-                    name="comment"
-                    label="Komentarz"
-                    multiline
-                    className={classes.textField}
-                    rows={5}
-                    value={comment}
-                    onChange={this.handleChange}
-                    margin="normal"
-                    error={comment === ''}
-                  />
-                  <Grid item>
-                    <Button onClick={this.handleCommentClick}>Zapisz</Button>
-                  </Grid>
+                    data.comments.map(comment => <Comment key={comment.id} {...comment} />)
+                  }
                 </Grid>
+                <AuthContext.Consumer>
+                  {
+                    ({ isAuthenticated, username }) => isAuthenticated ? (data.followingUsers.some(u => u.username === username) ? (
+                      <Grid item className={classes.flex} container direction="column">
+                        <Typography variant="subheading">
+                          Dodaj komentarz
+                        </Typography>
+                        <Divider />
+                        <TextField
+                          id="comment"
+                          name="comment"
+                          label="Komentarz"
+                          multiline
+                          className={classes.textField}
+                          rows={5}
+                          value={comment}
+                          onChange={this.handleChange}
+                          margin="normal"
+                          error={comment === ''}
+                        />
+                        <Grid item>
+                          <Button onClick={this.handleCommentClick}>Zapisz</Button>
+                        </Grid>
+                      </Grid>
+                    ) : (
+                        <Grid item className={classes.flex} container direction="column">
+                          <Typography variant="subheading">
+                            Obserwuj zgłoszenie, aby móc dodać komentarz.
+                        </Typography>
+                        </Grid>
+                      )
+                    ) : (
+                        <Grid item className={classes.flex} container direction="column">
+                          <Typography variant="subheading">
+                            Zaloguj się, aby móc dodać komentarz.
+                          </Typography>
+                        </Grid>
+                      )
+                  }
+                </AuthContext.Consumer>
               </Grid>
             </Paper>
           </Grid>

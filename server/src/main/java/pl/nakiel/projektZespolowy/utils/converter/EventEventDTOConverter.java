@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.nakiel.projektZespolowy.domain.events.Event;
+import pl.nakiel.projektZespolowy.domain.geo.Localization;
 import pl.nakiel.projektZespolowy.resources.dto.common.EventDTO;
+import pl.nakiel.projektZespolowy.resources.dto.common.LocalizationDTO;
 
 import java.util.stream.Collectors;
 
@@ -34,6 +36,11 @@ public class EventEventDTOConverter {
         eventDTO.setSubmissionDate(event.getDate());
         eventDTO.setType(event.getType());
         eventDTO.setViews(event.getViews());
+        Localization loc = event.getLocalization();
+        LocalizationDTO locDto = new LocalizationDTO();
+        locDto.setLatitude(loc.getLatitude());
+        locDto.setLongitude(loc.getLongitude());
+        eventDTO.setLocalization(locDto);
         eventDTO.setFollowingUsers(
                 event
                     .getFollowingUsers()
