@@ -182,5 +182,26 @@ public class EventService implements IEventService{
         imageRepository.save(im);
     }
 
-
+    @Override
+    public void updateEvent(Long id, EventDTO eventDTO){
+        Event event = eventRepository.getOne(id);
+        if(eventDTO.getDescription() != null)
+            event.setDescription(eventDTO.getDescription());
+        if(eventDTO.getDate() != null) {
+            try {
+                event.setDate(eventDTO.getSubmissionDateConverted());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        if(eventDTO.getLocalization() != null){
+            event.getLocalization().setLatitude(eventDTO.getLocalization().getLatitude());
+            event.getLocalization().setLongitude(eventDTO.getLocalization().getLongitude());
+        }
+        if(eventDTO.getTitle() != null)
+            event.setTitle(eventDTO.getTitle());
+        if(eventDTO.getType() == null)
+            event.setType(eventDTO.getType());
+        eventRepository.save(event);
+    }
 }

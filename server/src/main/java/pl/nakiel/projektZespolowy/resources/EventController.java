@@ -107,6 +107,15 @@ public class EventController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.PATCH,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity patchEvent(@PathVariable("id") Long id, @RequestBody AddEventRequestDTO addEventRequestDTO){
+        eventService.updateEvent(id, addEventRequestDTO.getEvent());
+        return ResponseEntity.ok().build();
+    }
 
 
 }
