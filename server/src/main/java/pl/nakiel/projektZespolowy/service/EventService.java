@@ -98,6 +98,10 @@ public class EventService implements IEventService{
         if(!event.getFollowingUsers().contains(securityService.getCurrentUser()))
             event.getFollowingUsers().add(securityService.getCurrentUser());
         eventRepository.save(event);
+        for(User user : event.getFollowingUsers()){
+            if(user.getId() != securityService.getCurrentUser().getId())
+                notificationService.addNotification(event, user, "Kolejna osoba obserwuje zdarzenie");
+        }
     }
 
     @Override
