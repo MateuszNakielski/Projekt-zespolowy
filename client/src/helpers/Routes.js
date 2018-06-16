@@ -1,20 +1,28 @@
-import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
-import AuthContext from '../helpers/AuthContext'
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import {withRouter} from 'react-router';
+import AuthContext from '../helpers/AuthContext';
 
-export const AuthenticatedRoute = (props) => {
+let AuthenticatedRoute = (props) => {
   // TODO: redirPath as qs
   return (
     <AuthContext.Consumer>
-      {({ isAuthenticated }) => isAuthenticated ? <Route {...props} /> : <Redirect to={`/login`} />}
+      {({ isAuthenticated }) => isAuthenticated ? <Route {...props} /> : <Redirect to={`/login?next=${props.history.location.pathname}`} />}
     </AuthContext.Consumer>
   )
-}
+};
+AuthenticatedRoute = withRouter(AuthenticatedRoute);
 
-export const AuthenticatedWithRoleRoute = ({role, ...props}) => {
+let AuthenticatedWithRoleRoute = ({ role, ...props }) => {
   return (
     <AuthContext.Consumer>
-      {({ roles }) => role in roles ? <Route {...props} /> : <Redirect to={`/login`} />}
+      {({ roles }) => role in roles ? <Route {...props} /> : <Redirect to={`/login?next=${props.history.location.pathname}`} />}
     </AuthContext.Consumer>
   )
-}
+};
+AuthenticatedWithRoleRoute = withRouter(AuthenticatedWithRoleRoute);
+
+const AdminRoute = (props) => <AuthenticatedWithRoleRoute role="ADMIN" {...props} />;
+
+
+export { AuthenticatedRoute, AuthenticatedWithRoleRoute, AdminRoute }

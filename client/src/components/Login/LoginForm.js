@@ -21,7 +21,7 @@ const LoginForm = (props) => {
   const { hasError } = props.errors;
   const { username, password } = props.data;
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <div className={classes.container}>
       <TextField
         id="username"
         label="Nazwa użytkownika"
@@ -44,7 +44,7 @@ const LoginForm = (props) => {
         margin="normal"
         error={hasError}
       />
-    </form>
+    </div>
   )
 }
 LoginForm.propTypes = {

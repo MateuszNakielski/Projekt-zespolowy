@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthContext from '../helpers/AuthContext';
+import qs from 'qs';
 import { withRouter } from 'react-router';
 import RegisterForm from '../components/Register/RegisterForm';
 import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar, Button, withMobileDialog } from '@material-ui/core';
@@ -23,6 +24,7 @@ class Register extends React.Component {
 
   handleClose = () => {
     const { history } = this.props;
+    const next = qs.parse(history.location.search.substring(1)).next || '/events';
     this.setState({
       username: '',
       password: '',
@@ -32,7 +34,7 @@ class Register extends React.Component {
       hasError: false,
     });
 
-    history.goBack();
+    history.push(next);
   }
 
   handleChange = (key) => (ev) => {

@@ -18,6 +18,7 @@ const styles = theme => ({
     },
     row: {
         display: 'flex',
+        margin: theme.spacing.unit*2,
         flexDirection: 'row',
     },
 
@@ -206,7 +207,7 @@ class NewEvent extends React.Component {
                         </div>
                     </div>
                     <div className={classes.row}>
-                        <Button variant="contained" className={classes.button} type="submit">Wyślij zgłoszenie</Button>
+                        <Button variant="contained" color="primary" className={classes.button} type="submit">Wyślij zgłoszenie</Button>
                     </div>
                 </form>
             </Paper >

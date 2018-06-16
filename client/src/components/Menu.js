@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { withStyles } from '@material-ui/core/styles';
 import { Button, IconButton, Typography } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person'
@@ -11,12 +12,12 @@ const styles = theme => ({
     margin: `0 ${theme.spacing.unit}px`
   }
 });
-const Menu = ({ classes }) => {
+const Menu = ({ classes, history }) => {
 
   const unauthenticatedItems = (
     <React.Fragment>
-      <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/signup'>Rejestracja</Button>
-      <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/login'>Logowanie</Button>
+      <Button variant="contained" color="secondary" className={classes.button} component={Link} to={`/signup?next=${history.location.pathname}`}>Rejestracja</Button>
+      <Button variant="contained" color="secondary" className={classes.button} component={Link} to={`/login?next=${history.location.pathname}`}>Logowanie</Button>
     </React.Fragment>
   );
 
@@ -37,4 +38,4 @@ const Menu = ({ classes }) => {
   )
 }
 
-export default withStyles(styles)(Menu);
+export default withRouter(withStyles(styles)(Menu));

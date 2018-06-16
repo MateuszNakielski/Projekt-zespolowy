@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthContext from '../helpers/AuthContext';
+import qs from 'qs';
 import { withRouter } from 'react-router';
 import LoginForm from '../components/Login/LoginForm';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar, withMobileDialog, withStyles } from '@material-ui/core';
@@ -31,13 +32,14 @@ class Login extends React.Component {
 
   handleClose = () => {
     const { history } = this.props;
+    const next = qs.parse(history.location.search.substring(1)).next || '/events';
     this.setState({
       username: '',
       password: '',
       hasError: false,
     });
 
-    history.goBack();
+    history.push(next);
   }
 
   handleChange = (key) => (ev) => {
@@ -77,6 +79,7 @@ class Login extends React.Component {
                     >
                       Zaloguj
                     </Button>
+                    <Button variant="contained" color="secondary" type="button" onClick={() => this.props.history.goBack()}>Powrót</Button>
                   </DialogActions>
                 </form>
               </Dialog>
