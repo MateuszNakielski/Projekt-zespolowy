@@ -26,4 +26,6 @@ public interface IEventService {
     void removeImage(Long id, Long photoId);
 
     void updateEvent(Long id, EventDTO eventDTO);
+
+    void deleteEvent(Long id);
 }

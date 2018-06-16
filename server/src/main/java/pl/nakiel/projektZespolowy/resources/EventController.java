@@ -117,5 +117,13 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity deleteEvent(@PathVariable("id") Long id){
+        eventService.deleteEvent(id);
+        return ResponseEntity.ok().build();
+    }
 }

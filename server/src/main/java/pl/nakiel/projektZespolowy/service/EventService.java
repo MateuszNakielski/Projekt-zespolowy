@@ -10,10 +10,7 @@ import pl.nakiel.projektZespolowy.domain.events.Event;
 import pl.nakiel.projektZespolowy.domain.events.Image;
 import pl.nakiel.projektZespolowy.domain.geo.Localization;
 import pl.nakiel.projektZespolowy.domain.security.User;
-import pl.nakiel.projektZespolowy.repository.CommentRepository;
-import pl.nakiel.projektZespolowy.repository.EventRepository;
-import pl.nakiel.projektZespolowy.repository.ImageRepository;
-import pl.nakiel.projektZespolowy.repository.LocalizationRepository;
+import pl.nakiel.projektZespolowy.repository.*;
 import pl.nakiel.projektZespolowy.resources.dto.common.CommentDTO;
 import pl.nakiel.projektZespolowy.resources.dto.common.EventDTO;
 import pl.nakiel.projektZespolowy.resources.dto.common.ImageDTO;
@@ -35,6 +32,9 @@ public class EventService implements IEventService{
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Autowired
     private LocalizationRepository localizationRepository;
@@ -203,5 +203,12 @@ public class EventService implements IEventService{
         if(eventDTO.getType() == null)
             event.setType(eventDTO.getType());
         eventRepository.save(event);
+    }
+
+    @Override
+    public void deleteEvent(Long id){
+        Event event = eventRepository.getOne(id);
+        notificationRepository.getNotificationsByEvent(event).forEach((n)->notificationRepository.delete(n));
+        eventRepository.delete(event);
     }
 }
