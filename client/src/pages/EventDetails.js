@@ -140,9 +140,9 @@ class EventDetails extends React.Component {
                         ({ isAuthenticated, username }) => isAuthenticated ? (data.followingUsers.filter(
                           user => user.username === username
                         ).length === 0 ?
-                          <Button onClick={this.handleObserveClick}>Obserwuj</Button> :
-                          <Button disabled>Obserwowane</Button>
-                        ) : <Button disabled>Zaloguj się, aby obserwować</Button>
+                          <Button variant="contained" className={classes.button} onClick={this.handleObserveClick}>Obserwuj</Button> :
+                          <Button variant="contained" className={classes.button} disabled>Obserwowane</Button>
+                        ) : <Button variant="contained" className={classes.button} disabled>Zaloguj się, aby obserwować</Button>
                       }
                     </AuthContext.Consumer>
                   </Grid>
@@ -200,7 +200,7 @@ class EventDetails extends React.Component {
                           error={comment === ''}
                         />
                         <Grid item>
-                          <Button onClick={this.handleCommentClick}>Zapisz</Button>
+                          <Button variant="contained" className={classes.button} onClick={this.handleCommentClick}>Zapisz</Button>
                         </Grid>
                       </Grid>
                     ) : (

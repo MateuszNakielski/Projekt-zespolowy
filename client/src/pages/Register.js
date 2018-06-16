@@ -1,16 +1,15 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-
-import Snackbar from '@material-ui/core/Snackbar';
 import AuthContext from '../helpers/AuthContext';
 import { withRouter } from 'react-router';
 import RegisterForm from '../components/Register/RegisterForm';
+import { withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar, Button, withMobileDialog } from '@material-ui/core';
+
+
+const styles = theme => ({
+  button: {
+    margin: `0 ${theme.spacing.unit}px`
+  }
+});
 
 class Register extends React.Component {
 
@@ -41,7 +40,7 @@ class Register extends React.Component {
   }
 
   render() {
-    const { fullScreen } = this.props;
+    const { fullScreen, classes } = this.props;
 
     // TODO: Refactor to proper form with button type=submit, handle validation in onSubmit.
     return (
@@ -64,6 +63,8 @@ class Register extends React.Component {
               {
                 ({ register }) => (
                   <Button
+                    variant="contained"
+                    className={classes.button}
                     color="primary"
                     onClick={() => {
                       register(this.state).then(() => {
@@ -94,4 +95,4 @@ class Register extends React.Component {
   }
 }
 
-export default withRouter(withMobileDialog({ breakpoint: 'xs' })(Register));
+export default withStyles(styles)(withRouter(withMobileDialog({ breakpoint: 'xs' })(Register)));

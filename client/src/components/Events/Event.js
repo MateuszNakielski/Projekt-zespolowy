@@ -93,7 +93,7 @@ class Event extends React.Component {
             </Typography>
           </CardContent>
           <div className={classes.footer}>
-            <Chip label={moment.utc(data.date).fromNow()} className={classes.chip} />
+            <Chip color="secondary" label={moment.utc(data.date).fromNow()} className={classes.chip} />
             <Chip
               avatar={<Avatar>{formatNumber({ number: data.views })}</Avatar>}
               label="wyświetleń"
@@ -109,7 +109,7 @@ class Event extends React.Component {
               label="komentarzy"
               className={classes.chip}
             />
-            <Button component={EventDetailsLink({ id: data.id })} className={classes.right}>Szczegóły</Button>
+            <Button variant="contained" color="primary" component={EventDetailsLink({ id: data.id })} className={classes.right}>Szczegóły</Button>
           </div>
         </div>
         <div className={classes.thirdCol}>

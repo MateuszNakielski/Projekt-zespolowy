@@ -50,7 +50,7 @@ class Events extends Component {
         <Grid container spacing={16} direction='column'>
           <Grid item>
             <Paper className={classes.card}>
-              <Button className={classes.button} component={NewEventLink}>
+              <Button variant="contained" color="primary" className={classes.button} component={NewEventLink}>
                 Nowe zgłoszenie
               </Button>
             </Paper>

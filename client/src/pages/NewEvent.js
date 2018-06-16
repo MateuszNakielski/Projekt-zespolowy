@@ -206,7 +206,7 @@ class NewEvent extends React.Component {
                         </div>
                     </div>
                     <div className={classes.row}>
-                        <Button type="submit">Wyślij zgłoszenie</Button>
+                        <Button variant="contained" className={classes.button} type="submit">Wyślij zgłoszenie</Button>
                     </div>
                 </form>
             </Paper >

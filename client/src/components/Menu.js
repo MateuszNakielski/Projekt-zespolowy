@@ -7,25 +7,26 @@ import AuthContext from '../helpers/AuthContext';
 
 
 const styles = theme => ({
-
+  button: {
+    margin: `0 ${theme.spacing.unit}px`
+  }
 });
-const Menu = (props) => {
-  //const { classes } = props;
+const Menu = ({ classes }) => {
 
   const unauthenticatedItems = (
     <React.Fragment>
-      <Button component={Link} color="inherit" to='/signup'>Rejestracja</Button>
-      <Button component={Link} color="inherit" to='/login'>Logowanie</Button>
+      <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/signup'>Rejestracja</Button>
+      <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/login'>Logowanie</Button>
     </React.Fragment>
   );
 
   const ProfileLink = props => <Link to='/profile' {...props}></Link>
   const authenticatedItems = ({ displayName, logout }) => (
     <React.Fragment><Typography>{displayName}</Typography>
-      <IconButton component={ProfileLink}>
+      <IconButton component={ProfileLink} color="secondary">
         <PersonIcon />
       </IconButton>
-      <Button onClick={logout}>Wyloguj</Button>
+      <Button variant="contained" color="secondary" className={classes.button} onClick={logout}>Wyloguj</Button>
     </React.Fragment>
   );
 

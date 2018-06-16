@@ -1,23 +1,32 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-
-import Snackbar from '@material-ui/core/Snackbar';
 import AuthContext from '../helpers/AuthContext';
 import { withRouter } from 'react-router';
 import LoginForm from '../components/Login/LoginForm';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar, withMobileDialog, withStyles } from '@material-ui/core';
 
+
+const styles = theme => ({
+  button: {
+    margin: `0 ${theme.spacing.unit}px`
+  }
+});
 class Login extends React.Component {
 
   state = {
     username: '',
     password: '',
     hasError: false,
+  }
+
+  handleSubmit = ({ login }) => (ev) => {
+    ev.preventDefault();
+    const { username, password } = this.state;
+
+    login({ username, password }).then(() => {
+      this.handleClose();
+    }).catch((error) => {
+      this.setState({ hasError: true, errorNotificationVisible: true });
+    });
   }
 
   handleClose = () => {
@@ -36,46 +45,44 @@ class Login extends React.Component {
   }
 
   render() {
-    const { fullScreen } = this.props;
+    const { fullScreen, classes } = this.props;
     const { username, password, hasError } = this.state;
 
 
     return (
       <React.Fragment>
-        <Dialog
-          open
-          onClose={this.handleClose}
-          aria-labelledby="login-title"
-          fullScreen={fullScreen}
-        >
-          <DialogTitle id="login-title">Logowanie</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Aby się zalogować, podaj nazwę użytkownika oraz hasło.
-          </DialogContentText>
-            <LoginForm data={{username, password}} errors = {{hasError}} handleChange={this.handleChange} />
-          </DialogContent>
-          <DialogActions>
-            <AuthContext.Consumer>
-              {
-                ({ login }) => (
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      login({username, password}).then(() => {
-                        this.handleClose();
-                      }).catch((error) => {
-                        this.setState({ hasError: true, errorNotificationVisible: true });
-                      });
-                    }}
-                  >
-                    Zaloguj
-                </Button>
-                )
-              }
-            </AuthContext.Consumer>
-          </DialogActions>
-        </Dialog>
+        <AuthContext.Consumer>
+          {
+            ({ login }) => (
+              <Dialog
+                open
+                onClose={this.handleClose}
+                aria-labelledby="login-title"
+                fullScreen={fullScreen}
+              >
+                <form onSubmit={this.handleSubmit({ login })}>
+                  <DialogTitle id="login-title">Logowanie</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Aby się zalogować, podaj nazwę użytkownika oraz hasło.
+                    </DialogContentText>
+                    <LoginForm data={{ username, password }} errors={{ hasError }} handleChange={this.handleChange} />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                    >
+                      Zaloguj
+                    </Button>
+                  </DialogActions>
+                </form>
+              </Dialog>
+            )
+          }
+        </AuthContext.Consumer>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           open={hasError}
@@ -85,9 +92,9 @@ class Login extends React.Component {
           }}
           message={<span id="message-id">Dane logowania nie są poprawne. Spróbuj ponownie.</span>}
         />
-      </React.Fragment >
+      </React.Fragment>
     )
   }
 }
 
-export default withRouter(withMobileDialog({ breakpoint: 'xs' })(Login));
+export default withStyles(styles)(withRouter(withMobileDialog({ breakpoint: 'xs' })(Login)));
