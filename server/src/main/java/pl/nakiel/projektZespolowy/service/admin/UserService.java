@@ -54,13 +54,15 @@ public class UserService implements IUserService{
     public User createStandardUser(String username, String password, String email, String firstName, String secondName) throws UsernameExistsException {
         User user = new User();
         if(userRepository.findByUsername(username) != null)
-            throw new UsernameExistsException("Istnieje użytkownik o wskazanej roli");
+            throw new UsernameExistsException("Istnieje użytkownik o wskazanym loginie");
+        if(userRepository.findByEmail(email) != null)
+            throw new UsernameExistsException("Istnieje użytkownik o wskazanym loginie");
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setSecondName(secondName);
-        user.setStatus(User.TO_ACTIVATION_STD);
+        user.setStatus(User.ACTIVE_STD);
         user.getRoles().add(roleRepository.findByName("STANDARD_USER"));
 
         user = userRepository.save(user);
