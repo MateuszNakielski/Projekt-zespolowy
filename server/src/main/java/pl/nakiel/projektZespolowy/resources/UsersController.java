@@ -105,13 +105,13 @@ public class UsersController {
 
     @ResponseBody
     @RequestMapping(value = "",
-            method = RequestMethod.PUT,
+            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PreAuthorize("hasAuthority('STANDARD_USER')")
-    public ResponseEntity<?> editCurrentUser(@RequestBody EditCurrentUserRequestDTO editCurrentUserRequestDTO){
-
-        return new ResponseEntity<>(new EditCurrentUserResponseDTO(), HttpStatus.OK);
+    public ResponseEntity editCurrentUser(@RequestBody EditCurrentUserRequestDTO editCurrentUserRequestDTO){
+        userService.updateUser(editCurrentUserRequestDTO.getUser());
+        return ResponseEntity.ok().build();
     }
 
 

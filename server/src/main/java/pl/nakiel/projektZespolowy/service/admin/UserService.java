@@ -8,6 +8,7 @@ import pl.nakiel.projektZespolowy.domain.security.Role;
 import pl.nakiel.projektZespolowy.domain.security.User;
 import pl.nakiel.projektZespolowy.repository.RoleRepository;
 import pl.nakiel.projektZespolowy.repository.UserRepository;
+import pl.nakiel.projektZespolowy.resources.dto.common.UserDTO;
 import pl.nakiel.projektZespolowy.resources.dto.createstandarduser.CreateStandardUserRequestDTO;
 import pl.nakiel.projektZespolowy.resources.dto.initfacebookuser.InitFacebookUserRequestDTO;
 import pl.nakiel.projektZespolowy.security.ISecurityService;
@@ -97,5 +98,17 @@ public class UserService implements IUserService{
                 return Boolean.TRUE;
         }
         return Boolean.FALSE;
+    }
+
+    @Override
+    public void updateUser(UserDTO userDTO){
+        User user = securityService.getCurrentUser();
+        if(userDTO.getFirstName() != null)
+            user.setFirstName(userDTO.getFirstName());
+        if(userDTO.getSecondName() != null)
+            user.setSecondName(userDTO.getSecondName());
+        if(userDTO.getPhoneNumber() != null)
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+        userRepository.save(user);
     }
 }
