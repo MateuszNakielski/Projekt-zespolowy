@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
             description = exceptionName;
 
         }
-        return ResponseEntity.status(status).body(new ExceptionDTO(description));
+        return ResponseEntity.status(status).body(new ExceptionDTO(description, ex.getMessage()));
     }
 
 }

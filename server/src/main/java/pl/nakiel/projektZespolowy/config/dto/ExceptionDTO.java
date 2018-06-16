@@ -11,5 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ExceptionDTO {
 
     private String description;
+    private String message;
 
 }
