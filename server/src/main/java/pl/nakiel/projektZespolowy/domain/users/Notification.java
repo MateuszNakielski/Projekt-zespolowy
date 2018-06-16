@@ -1,6 +1,7 @@
 package pl.nakiel.projektZespolowy.domain.users;
 
 import lombok.Data;
+import org.hibernate.annotations.Type;
 import pl.nakiel.projektZespolowy.domain.events.Event;
 import pl.nakiel.projektZespolowy.domain.security.User;
 
@@ -28,5 +29,6 @@ public class Notification implements Serializable {
     private String content;
 
     @Column(name="IS_READ")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean read;
 }

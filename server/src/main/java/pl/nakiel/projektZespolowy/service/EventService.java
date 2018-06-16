@@ -109,7 +109,7 @@ public class EventService implements IEventService{
         comment.setCommentsAuthor(securityService.getCurrentUser());
         comment.setCommentsEvent(eventRepository.getOne(eventId));
         for(User user : event.getFollowingUsers()){
-            notificationService.addNotification(event, user, "Dodano nowy komentarz");
+            notificationService.addNotification(event, user, "Pojawił się nowy komentarz w zdarzeniu, które obserwujesz");
         }
         comment = commentRepository.save(comment);
         eventRepository.save(event);
@@ -162,7 +162,7 @@ public class EventService implements IEventService{
         event.getEventsImages().add(im);
         eventRepository.save(event);
         for(User user : event.getFollowingUsers()){
-            notificationService.addNotification(event, user, "Dodano nowy obraz");
+            notificationService.addNotification(event, user, "Pojawił się nowy obraz w zdarzeniu, które obserwujesz");
         }
     }
 
