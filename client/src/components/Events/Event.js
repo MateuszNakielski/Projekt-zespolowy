@@ -63,7 +63,7 @@ const EventDetailsLink = ({ id }) => props => <Link to={`/events/${id}`} {...pro
 class Event extends React.Component {
 
   getPhotoOrDefault = ({ photo }) => {
-    if (photo) return photo;
+    if (photo) return `http://localhost${photo.fileName}`;
     return defaultPhoto;
   }
 
@@ -75,7 +75,7 @@ class Event extends React.Component {
         <div className={classes.firstCol}>
           <CardMedia
             className={classes.photo}
-            image={this.getPhotoOrDefault({ photo: null })}
+            image={this.getPhotoOrDefault({ photo: (data.images.length > 0 ? data.images[0] : null) })}
             title={data.title}
           />
           <Typography variant="button" className={classes.eventType}>

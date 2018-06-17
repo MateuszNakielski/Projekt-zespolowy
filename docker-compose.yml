@@ -9,6 +9,7 @@ services:
       - 443:443
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./server/upload-dir:/files
  
   db:
     container_name: projekt-zespolowy-mysql

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, Paper, Typography, Grid, Button, Chip, Avatar, TextField, Divider } from '@material-ui/core';
+import { withStyles, Paper, Typography, Grid, Button, Chip, Avatar, TextField, Divider, GridList, GridListTile } from '@material-ui/core';
 import { API } from '../helpers/PetAlertAPI';
 import { getDisplayName, eventTypes, formatNumber } from '../helpers/Events';
 import moment from 'moment';
@@ -36,6 +36,10 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     flex: 1,
+  },
+  gridList: {
+    width: theme.spacing.unit * 96,
+    height: theme.spacing.unit * 48,
   },
 });
 
@@ -99,7 +103,7 @@ class EventDetails extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
     const { isLoaded, data, comment } = this.state;
     return isLoaded && (
       <div className={classes.root}>
@@ -120,9 +124,17 @@ class EventDetails extends React.Component {
                   <DisplayMap lat={data.localization.latitude} lng={data.localization.longitude} size={{ width: '100%', height: 400 }} />
                 </Grid>
                 <Grid item xs={8}>
-                  <Typography variant="subheading">
-                    Zdjęcia
-                </Typography>
+                  <GridList cellHeight={theme.spacing.unit * 48} className={classes.gridList} cols={1}>
+                    {
+                      data.images.map(
+                        image => (
+                          <GridListTile key={image.fileName} cols={1}>
+                            <img src={`http://localhost${image.fileName}`} />
+                          </GridListTile>
+                        )
+                      )
+                    }
+                  </GridList>
                 </Grid>
               </Grid>
             </Paper>
@@ -228,4 +240,4 @@ class EventDetails extends React.Component {
   }
 }
 
-export default withStyles(styles)(EventDetails);
+export default withStyles(styles, { withTheme: true })(EventDetails);

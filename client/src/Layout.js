@@ -9,6 +9,7 @@ import NewEvent from './pages/NewEvent';
 import EventDetails from './pages/EventDetails';
 import {AuthenticatedRoute, AdminRoute} from './helpers/Routes';
 import Admin from './pages/Admin';
+import Profile from './pages/Profile';
 
 class Layout extends Component {
   render() {
@@ -19,6 +20,7 @@ class Layout extends Component {
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/signup' component={Register} />
+          <AuthenticatedRoute exact path='/profile' component={Profile}/>
           <AdminRoute path='/admin' component={Admin} />
           <AuthenticatedRoute exact path='/events/new' component={NewEvent} />
           <Route path='/events/:id' component={EventDetails} />

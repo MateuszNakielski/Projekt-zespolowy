@@ -32,6 +32,41 @@ export default class PetAlertAPI {
     );
   }
 
+  updateUser = ({ firstName, lastName, phone }) => {
+    const user = { secondName: lastName, phoneNumber: phone, firstName };
+
+    return axios.post(
+      `${this.apiRoot}/api/users`,
+      { user },
+      { withCredentials: true }
+    ).then((data) => {
+      var authData = JSON.parse(sessionStorage.getItem('auth'));
+      authData.displayName = `${firstName || ''} ${lastName || ''}`.trim();
+      sessionStorage.setItem('auth', JSON.stringify(authData));
+      window.location = window.location;
+      return data;
+    });
+  }
+
+  toggleActivation = ({ id, activate }) => {
+    const status = activate ? 3 : 1;
+
+    return axios.patch(
+      `${this.apiRoot}/api/users/${id}`,
+      { user: { status } },
+      { withCredentials: true }
+    )
+  }
+
+  toggleAdmin = ({ id, admin }) => {
+    const role = admin ? "ADMIN" : "STANDARD_USER";
+    return axios.patch(
+      `${this.apiRoot}/api/users/${id}`,
+      { user: { roles: [role] } },
+      { withCredentials: true }
+    )
+  }
+
   signUp = ({ lastName, ...user }) => {
     return axios.post(
       `${this.apiRoot}/api/users/signup`,
@@ -62,7 +97,6 @@ export default class PetAlertAPI {
   }
 
   addEvent = ({ event }) => {
-    console.log(JSON.stringify(event).length);
     return axios.post(
       `${this.apiRoot}/api/event`,
       { event },
@@ -77,6 +111,12 @@ export default class PetAlertAPI {
     )
   }
 
+  removeEvent = ({ id }) => {
+    return axios.post(
+      `${this.apiRoot}/api/event/${id}/delete`,
+      { withCredentials: true }
+    )
+  }
   observeEvent = ({ id }) => {
     return axios.post(
       `${this.apiRoot}/api/event/${id}/followers`,

@@ -16,7 +16,9 @@ AuthenticatedRoute = withRouter(AuthenticatedRoute);
 let AuthenticatedWithRoleRoute = ({ role, ...props }) => {
   return (
     <AuthContext.Consumer>
-      {({ roles }) => role in roles ? <Route {...props} /> : <Redirect to={`/login?next=${props.history.location.pathname}`} />}
+      {
+        ({ roles }) => roles.includes(role) ? <Route {...props} /> : <Redirect to={`/login?next=${props.history.location.pathname}`} />
+      }
     </AuthContext.Consumer>
   )
 };

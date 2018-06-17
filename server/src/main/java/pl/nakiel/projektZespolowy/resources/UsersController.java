@@ -105,7 +105,7 @@ public class UsersController {
 
     @ResponseBody
     @RequestMapping(value = "",
-            method = RequestMethod.PATCH,
+            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PreAuthorize("hasAuthority('STANDARD_USER')")
