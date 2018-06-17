@@ -96,7 +96,8 @@ class EventDetails extends React.Component {
         .then(
           response => this.setState({
             isLoaded: true,
-            data: response.data.event
+            data: response.data.event,
+            comment: ''
           })
         )
     })

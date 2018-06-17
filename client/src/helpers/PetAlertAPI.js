@@ -151,6 +151,11 @@ export default class PetAlertAPI {
       { withCredentials: true }
     );
   }
+
+  getNotifications = () => axios.get(
+    `${this.apiRoot}/api/notifications`,
+    { withCredentials: true }
+  )
 }
 
 export const API = new PetAlertAPI('http://localhost');

@@ -84,7 +84,7 @@ class Register extends React.Component {
           </DialogActions>
         </Dialog>
         <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           open={this.state.hasError}
           onClose={() => { this.setState({ hasError: false }) }}
           ContentProps={{
